@@ -1,0 +1,7 @@
+spacer:
+  locations:
+  - name: nowhere
+    current_path_regex: NOT A PATH
+    current_path_command: echo impossible
+  - name: all
+    current_path_command: echo example-path

@@ -1,0 +1,8 @@
+spacer:
+  locations:
+  - name: documents
+    current_path_regex: .*/[Dd]ocuments/.*
+    current_path_command: pwd | sed 's:[Dd]ocuments/:[docs]:'
+  - name: uppercase-all
+    current_path_command: |
+      pwd |  tr '[:lower:]' '[:upper:]'
