@@ -6,3 +6,11 @@ spacer:
   - name: uppercase-all
     current_path_command: |
       pwd |  tr '[:lower:]' '[:upper:]'
+  layouts:
+    - name: here
+      location_name: uppercase-all
+      command: echo "I'm here"
+      children:
+        - location_name: uppercase-all
+          direction: down
+
