@@ -1,0 +1,18 @@
+spacer:
+  locations:
+  - name: here
+    current_path_regex: .*
+    current_path_command: pwd
+    layout_name: four
+  creators:
+  layouts:
+  - name: four
+    command: echo 4
+    children:
+    - direction: UP
+      command: echo 4-up
+      children:
+      - command: echo 4-up-here
+    - direction: RIGHT
+      command: echo 4-right
+

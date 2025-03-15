@@ -2,15 +2,22 @@ spacer:
   locations:
   - name: documents
     current_path_regex: .*/[Dd]ocuments/.*
-    current_path_command: pwd | sed 's:[Dd]ocuments/:[docs]:'
+    current_path_command: sed 's:[Dd]ocuments/:[docs]:'
+    change_path_command: echo ~/Documents
+    creator_name: noop
   - name: uppercase-all
+    change_path_command: echo here
     current_path_command: |
-      pwd |  tr '[:lower:]' '[:upper:]'
+      tr '[:lower:]' '[:upper:]'
+    layout_name: here
+  creators:
+    - name: noop
+      command: pwd
   layouts:
     - name: here
       location_name: uppercase-all
       command: echo "I'm here"
       children:
         - location_name: uppercase-all
-          direction: down
+          direction: DOWN
 

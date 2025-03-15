@@ -1,11 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
 	"regexp"
+	"strings"
 )
 
 type Location struct {
@@ -32,13 +34,29 @@ const (
 	RIGHT
 )
 
+func (p *PaneDirection) UnmarshalYAML(n *yaml.Node) error {
+	v := strings.ToLower(n.Value)
+	switch v {
+	case "up":
+		*p = UP
+	case "down":
+		*p = DOWN
+	case "left":
+		*p = LEFT
+	case "right":
+		*p = RIGHT
+	default:
+		return errors.New("unknown PaneDirection " + v)
+	}
+	return nil
+}
+
 type Pane struct {
-	LocationName string `yaml:"location_name"`
-	Command      string `yaml:"command"`
-	// TODO: ENUM
-	Direction string `yaml:"direction"`
-	Percent   int    `yaml:"percent"`
-	Children  []Pane `yaml:"children"`
+	LocationName string        `yaml:"location_name"`
+	Command      string        `yaml:"command"`
+	Direction    PaneDirection `yaml:"direction"`
+	Percent      int           `yaml:"percent"`
+	Children     []Pane        `yaml:"children"`
 }
 
 type Layout struct {
@@ -61,13 +79,13 @@ type Config struct {
 func ReadConfig(filename string) Config {
 	raw, err := ioutil.ReadFile(filename)
 	if err != nil {
-		fmt.Println("unable to read config:", filename, err)
+		fmt.Fprintln(os.Stderr, "unable to read config:", filename, err)
 		os.Exit(1)
 	}
 
 	config := Config{}
 	if err := yaml.Unmarshal(raw, &config); err != nil {
-		fmt.Println("unable to parse config:", filename, err)
+		fmt.Fprintln(os.Stderr, "unable to parse config:", filename, err)
 		os.Exit(1)
 	}
 

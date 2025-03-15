@@ -30,12 +30,44 @@ func MatchCurrentPath(path string, locations *[]Location) *Location {
 	return nil
 }
 
-func MatchChangePath(path string, locations *[]Location) *Location {
+func MatchChangePath(name string, path string, locations *[]Location) *Location {
 	for _, l := range *locations {
 		if l.ChangePathRegex != nil && !l.ChangePathRegex.MatchString(path) {
 			continue
 		}
+		if l.Name != name {
+			continue
+		}
+		return &l
+	}
+	return nil
+}
 
+func MatchName(name string, locations *[]Location) *Location {
+	for _, l := range *locations {
+		if l.Name != name {
+			continue
+		}
+		return &l
+	}
+	return nil
+}
+
+func MatchCreatorName(name string, creators *[]Creator) *Creator {
+	for _, c := range *creators {
+		if c.Name != name {
+			continue
+		}
+		return &c
+	}
+	return nil
+}
+
+func MatchLayoutName(name string, layouts *[]Layout) *Layout {
+	for _, l := range *layouts {
+		if l.Name != name {
+			continue
+		}
 		return &l
 	}
 	return nil

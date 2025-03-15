@@ -5,3 +5,25 @@ spacer:
     current_path_command: echo impossible
   - name: all
     current_path_command: echo example-path
+    change_path_regex: never!
+    change_path_command: echo impossible
+    creator_name: noop
+    layout_name: echo
+  - name: all
+    change_path_command: echo ~
+    creator_name: simple
+  - name: does-not-exit
+    change_path_command: echo nowhere
+  - name: creatable
+    creator_name: simple
+    layout_name: tmp
+  creators:
+  - name: noop
+    command: echo -n
+  - name: simple
+    command: echo simple; cd ~
+  layouts:
+  - name: echo
+    command: echo look around
+  - name: tmp
+    command: echo tmp; cd /tmp
