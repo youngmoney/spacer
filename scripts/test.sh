@@ -17,7 +17,9 @@ function change_cwd() {
 }
 
 diff <(change all) <(echo cd "$HOME")
+diff <(change pipe) <(echo cd $(pwd))
 change_cwd all "$HOME"
+change_cwd pipe $(pwd)
 change does-not-exit 2>/dev/null && echo "change does-not-exist should fail"
 
 function create() {

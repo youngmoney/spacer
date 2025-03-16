@@ -27,6 +27,8 @@ spacer:
     layout_name: move
   - name: reflective
     layout_name: changes
+  - name: pipe
+    change_path_command: cat
   creators:
   - name: noop
     command: echo -n
