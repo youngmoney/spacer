@@ -4,7 +4,9 @@ function spacer::cd {
     f=$(mktemp)
     spacer --cwd_file "$f" "$@"
     d=$(cat "$f")
-    [ -d "$d" ] && cd "$d" || echo "cannot cd to: $d"
+    if [ -d "$d" ]; then
+        cd "$d" || echo "cannot cd to: $d"
+    fi
 }
 
 alias spacer-layout="spacer::cd layout"
