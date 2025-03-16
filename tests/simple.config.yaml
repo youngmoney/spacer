@@ -12,11 +12,21 @@ spacer:
   - name: all
     change_path_command: echo ~
     creator_name: simple
+    layout_name: echo
   - name: does-not-exit
     change_path_command: echo nowhere
   - name: creatable
     creator_name: simple
     layout_name: tmp
+  - name: must-create
+    change_path_regex: NOT A PATH
+    creator_name: simple
+    change_path_command: pwd
+  - name: movable
+    change_path_command: pwd
+    layout_name: move
+  - name: reflective
+    layout_name: changes
   creators:
   - name: noop
     command: echo -n
@@ -27,3 +37,8 @@ spacer:
     command: echo look around
   - name: tmp
     command: echo tmp; cd /tmp
+  - name: move
+    command: echo moving; cd ~
+  - name: changes
+    location_name: all
+    command: echo good

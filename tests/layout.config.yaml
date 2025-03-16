@@ -3,6 +3,7 @@ spacer:
   - name: here
     current_path_regex: .*
     current_path_command: pwd
+    change_path_command: echo ~
     layout_name: four
   creators:
   layouts:
@@ -11,6 +12,7 @@ spacer:
     children:
     - direction: UP
       command: echo 4-up
+      location_name: here
       children:
       - command: echo 4-up-here
     - direction: RIGHT

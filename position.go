@@ -14,7 +14,7 @@ func asNumbers(s []string) ([]int, error) {
 		}
 		n, err := strconv.Atoi(p)
 		if err != nil {
-			return []int{}, errors.New("invalid line number: " + p)
+			return []int{}, errors.New("invalid position number: " + p)
 		}
 		i = append(i, n)
 	}
@@ -23,7 +23,7 @@ func asNumbers(s []string) ([]int, error) {
 }
 
 func ParsePositions(s string) ([]int, error) {
-	p := strings.Split(s, "-")
+	p := strings.Split(s, ",")
 	return asNumbers(p)
 }
 
