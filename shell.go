@@ -21,6 +21,9 @@ func PrintBash(s ...any) {
 }
 
 func IsDir(path string) bool {
+	if os.Getenv("SPACER_DIR_CHECK") == "disabled" {
+		return path != ""
+	}
 	p, e := filepath.EvalSymlinks(path)
 	if e != nil {
 		return false
