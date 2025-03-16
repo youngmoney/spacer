@@ -55,7 +55,7 @@ func commandChange(name string, create bool, layout bool, locations *[]Location,
 		os.Exit(1)
 	}
 
-	raw, err := ExecuteCommandQuietlyCaptureOutput(match.ChangePathCommand, []string{}, "")
+	raw, err := ExecuteCommandQuietlyCaptureOutput(match.ChangePathCommand, []string{}, cwd)
 	ExitIfNonZero(err)
 	d := VerifyDirectory(raw)
 	if !layout || match.LayoutName == "" {

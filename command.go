@@ -84,7 +84,7 @@ func ExecuteCommandInteractiveCaptureCwd(command string, args []string) (string,
 	defer os.Remove(f.Name())
 
 	var c = command
-	c = c + ";\n"
+	c = c + "\n"
 	c = c + "O=$?;\n"
 	c = c + "CWDFILE=\"" + f.Name() + "\";\n"
 	c = c + "[ -f \"$CWDFILE\" ] && pwd > \"$CWDFILE\";\n"
