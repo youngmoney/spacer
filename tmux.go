@@ -29,7 +29,7 @@ func SplitWindow(direction PaneDirection, percent int, position []int, layout st
 	args = append(args, []string{"-t", os.Getenv("TMUX_PANE")}...)
 	// args = append(args, "-P")
 	// args = append(args, []string{"-F", "#{pane_id}"}...)
-	args = append(args, "bash --rcfile <(echo '. ~/.bashrc; spacer layout --position "+PositionString(position)+" "+layout+"')")
+	args = append(args, "bash --rcfile <(echo '. ~/.bashrc; spacer::cd layout --position "+PositionString(position)+" "+layout+"')")
 	// print(f"\\tmux send-keys -t \"$new\" '{command}' Enter")
 	ExitIfNonZero(ExecuteCommandInteractive(`tmux "$@"`, args))
 }

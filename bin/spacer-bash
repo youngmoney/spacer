@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+function spacer::cd {
+    f=$(mktemp)
+    spacer --cwd_file "$f" "$@"
+    d=$(cat "$f")
+    [ -d "$d" ] && cd "$d" || echo "cannot cd to: $d"
+}
+
+alias spacer-layout="spacer::cd layout"
+alias spacer-change="spacer::cd change"
+alias spacer-create="spacer::cd create"
+
+function spacer::completion {
+  COMPREPLY=($(compgen -W "$(spacer change)" -- "${COMP_WORDS[${#COMP_WORDS[@]}-1]}"))
+}

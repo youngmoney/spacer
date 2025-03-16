@@ -172,6 +172,7 @@ func WriteCwd(f string, cwd string) {
 
 func main() {
 	configFilename := flag.String("config", os.Getenv("SPACER_CONFIG"), "config file (yaml), or set SPACER_CONFIG")
+	cwdfile := flag.String("cwd_file", "", "a file to write the new cwd to")
 	flag.Parse()
 
 	config := ReadConfig(*configFilename)
@@ -185,7 +186,6 @@ func main() {
 		fs := flag.NewFlagSet("change", flag.ExitOnError)
 		create := fs.Bool("create", false, "create the location if the path does not match")
 		layout := fs.Bool("layout", false, "layout the location")
-		cwdfile := fs.String("cwd_file", "", "a file to write the new cwd to")
 		fs.Parse(flag.Args()[1:])
 		if fs.NArg() != 1 {
 			printNames(&config.Spacer.Locations)
@@ -195,7 +195,6 @@ func main() {
 		WriteCwd(*cwdfile, cwd)
 	case "create":
 		fs := flag.NewFlagSet("create", flag.ExitOnError)
-		cwdfile := fs.String("cwd_file", "", "a file to write the new cwd to")
 		fs.Parse(flag.Args()[1:])
 		if fs.NArg() != 1 {
 			printNames(&config.Spacer.Locations)
@@ -205,7 +204,6 @@ func main() {
 		WriteCwd(*cwdfile, cwd)
 	case "layout":
 		fs := flag.NewFlagSet("layout", flag.ExitOnError)
-		cwdfile := fs.String("cwd_file", "", "a file to write the new cwd to")
 		position := fs.String("position", "", "internally used for multi-pane layout")
 		fs.Parse(flag.Args()[1:])
 		if fs.NArg() != 1 {
@@ -217,8 +215,13 @@ func main() {
 			fmt.Fprintln(os.Stderr, perr)
 			os.Exit(1)
 		}
-		cwd := commandLayout(fs.Arg(0), p, &config.Spacer.Locations, &config.Spacer.Layouts)
-		WriteCwd(*cwdfile, cwd)
+		if len(p) == 0 {
+			cwd := commandLayout(fs.Arg(0), p, &config.Spacer.Locations, &config.Spacer.Layouts)
+			WriteCwd(*cwdfile, cwd)
+		} else {
+			cwd := doLayout(fs.Arg(0), p, &config.Spacer.Locations, &config.Spacer.Layouts)
+			WriteCwd(*cwdfile, cwd)
+		}
 	default:
 		if flag.NArg() > 0 {
 			fmt.Fprintln(os.Stderr, "unknown command:", flag.Arg(0))

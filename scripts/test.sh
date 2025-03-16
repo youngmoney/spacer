@@ -12,7 +12,7 @@ function change() {
 
 function change_cwd() {
     f=$(mktemp)
-    go run . --config tests/simple.config.yaml  change --cwd_file "$f" "$1"
+    go run . --config tests/simple.config.yaml  --cwd_file "$f" change "$1"
     diff "$f" <(echo "$2")
 }
 
@@ -26,7 +26,7 @@ function create() {
 
 function create_cwd() {
     f=$(mktemp)
-    go run . --config tests/simple.config.yaml create --cwd_file "$f" "$1" > /dev/null
+    go run . --config tests/simple.config.yaml --cwd_file "$f" create "$1" > /dev/null
     diff "$f" <(echo "$2")
 }
 
@@ -42,7 +42,7 @@ function layout() {
 
 function layout_cwd() {
     f=$(mktemp)
-    go run . --config tests/simple.config.yaml layout --cwd_file "$f" "$1" > /dev/null
+    go run . --config tests/simple.config.yaml --cwd_file "$f" layout "$1" > /dev/null
     diff "$f" <(echo "$2")
 }
 
@@ -60,13 +60,13 @@ function layout_position() {
 
 function layout_position_cwd() {
     f=$(mktemp)
-    SPACER_TMUX_DISABLED=true go run . --config tests/layout.config.yaml layout --cwd_file "$f" --position "$2" "$1" > /dev/null
+    SPACER_TMUX_DISABLED=true go run . --config tests/layout.config.yaml --cwd_file "$f" layout --position "$2" "$1" > /dev/null
     diff "$f" <(echo "$2")
 }
 
 diff <(layout_position here) <(echo 4; echo cd $(pwd))
-diff <(layout_position here 0) <(echo 4-up; echo cd "$HOME")
-diff <(layout_position here 1) <(echo 4-right; echo cd $(pwd))
+diff <(layout_position four 0) <(echo 4-up; echo cd "$HOME")
+diff <(layout_position four 1) <(echo 4-right; echo cd $(pwd))
 
 function change_create() {
     go run . --config tests/simple.config.yaml change --create "$1"
@@ -74,7 +74,7 @@ function change_create() {
 
 function change_create_cwd() {
     f=$(mktemp)
-    go run . --config tests/simple.config.yaml  change --create --cwd_file "$f" "$1"
+    go run . --config tests/simple.config.yaml  --cwd_file "$f" change --create "$1"
     diff "$f" <(echo "$2")
 }
 
@@ -89,7 +89,7 @@ function change_layout() {
 
 function change_layout_cwd() {
     f=$(mktemp)
-    go run . --config tests/simple.config.yaml  change --layout --cwd_file "$f" "$1" > /dev/null
+    go run . --config tests/simple.config.yaml  --cwd_file "$f" change --layout "$1" > /dev/null
     diff "$f" <(echo "$2")
 }
 
