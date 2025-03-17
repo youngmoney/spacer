@@ -57,16 +57,16 @@ layout_cwd reflective "$HOME"
 layout_cwd creatable /tmp
 
 function layout_position() {
-    SPACER_TMUX_DISABLED=1 go run . --config tests/layout.config.yaml layout --position "$2" "$1"
+    SPACER_TMUX_DISABLED=1 go run . --config tests/layout.config.yaml layout-internal --position "$2" "$1"
 }
 
 function layout_position_cwd() {
     f=$(mktemp)
-    SPACER_TMUX_DISABLED=true go run . --config tests/layout.config.yaml --cwd_file "$f" layout --position "$2" "$1" > /dev/null
+    SPACER_TMUX_DISABLED=true go run . --config tests/layout.config.yaml --cwd_file "$f" layout-internal --position "$2" "$1" > /dev/null
     diff "$f" <(echo "$2")
 }
 
-diff <(layout_position here) <(echo 4; echo cd $(pwd))
+layout_position here 2>/dev/null && echo "positionless layout internal should fail"
 diff <(layout_position four 0) <(echo 4-up; echo cd "$HOME")
 diff <(layout_position four 1) <(echo 4-right; echo cd $(pwd))
 

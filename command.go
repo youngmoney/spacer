@@ -55,7 +55,7 @@ func ExecuteCommandInteractive(command string, args []string) error {
 func VerifyDirectory(in string) string {
 	s := strings.Trim(in, "\n\r")
 	if s == "" {
-		fmt.Fprintln(os.Stderr, "command has no directory:", s)
+		fmt.Fprintln(os.Stderr, "command has no directory")
 		os.Exit(1)
 	}
 	if !IsDir(s) {

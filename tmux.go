@@ -19,17 +19,14 @@ func directionFlags(d PaneDirection) []string {
 }
 
 func SplitWindow(direction PaneDirection, percent int, position []int, layout string) {
-	// -c CWD
-	// var command = `split-window -l {percent} -d {directions} -t {pane} -P -F '#{{pane_id}}' '; bash'`
 	var args = []string{"split-window", "-d"}
 	if percent > 0 {
-		args = append(args, []string{"-l", strconv.Itoa(percent)}...)
+		args = append(args, []string{"-p", strconv.Itoa(percent)}...)
 	}
 	args = append(args, directionFlags(direction)...)
 	args = append(args, []string{"-t", os.Getenv("TMUX_PANE")}...)
 	// args = append(args, "-P")
 	// args = append(args, []string{"-F", "#{pane_id}"}...)
-	args = append(args, "bash --rcfile <(echo '. ~/.bashrc; spacer::cd layout --position "+PositionString(position)+" "+layout+"')")
-	// print(f"\\tmux send-keys -t \"$new\" '{command}' Enter")
+	args = append(args, "bash --rcfile <(echo '. ~/.bashrc; spacer-bash layout-internal --position "+PositionString(position)+" "+layout+"')")
 	ExitIfNonZero(ExecuteCommandInteractive(`tmux "$@"`, args))
 }

@@ -16,3 +16,5 @@ alias spacer-create="spacer::cd create"
 function spacer::completion {
   COMPREPLY=($(compgen -W "$(spacer change)" -- "${COMP_WORDS[${#COMP_WORDS[@]}-1]}"))
 }
+
+(return 0 2>/dev/null) || spacer::cd "$@"

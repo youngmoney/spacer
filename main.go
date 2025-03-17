@@ -94,7 +94,7 @@ func commandCreate(name string, locations *[]Location, creators *[]Creator) stri
 	return VerifyDirectory(raw)
 }
 
-func commandLayout(name string, position []int, locations *[]Location, layouts *[]Layout) string {
+func commandLayout(name string, locations *[]Location, layouts *[]Layout) string {
 	match := MatchName(name, locations)
 	if match == nil {
 		fmt.Fprintln(os.Stderr, "no location named:", name)
@@ -104,7 +104,7 @@ func commandLayout(name string, position []int, locations *[]Location, layouts *
 	if match.LayoutName == "" {
 		os.Exit(1)
 	}
-	return doLayout(match.LayoutName, position, locations, layouts)
+	return doLayout(match.LayoutName, []int{}, locations, layouts)
 }
 
 func doLayout(name string, position []int, locations *[]Location, layouts *[]Layout) string {
@@ -204,6 +204,15 @@ func main() {
 		WriteCwd(*cwdfile, cwd)
 	case "layout":
 		fs := flag.NewFlagSet("layout", flag.ExitOnError)
+		fs.Parse(flag.Args()[1:])
+		if fs.NArg() != 1 {
+			printNames(&config.Spacer.Locations)
+			os.Exit(1)
+		}
+		cwd := commandLayout(fs.Arg(0), &config.Spacer.Locations, &config.Spacer.Layouts)
+		WriteCwd(*cwdfile, cwd)
+	case "layout-internal":
+		fs := flag.NewFlagSet("layout-internal", flag.ExitOnError)
 		position := fs.String("position", "", "internally used for multi-pane layout")
 		fs.Parse(flag.Args()[1:])
 		if fs.NArg() != 1 {
@@ -216,12 +225,11 @@ func main() {
 			os.Exit(1)
 		}
 		if len(p) == 0 {
-			cwd := commandLayout(fs.Arg(0), p, &config.Spacer.Locations, &config.Spacer.Layouts)
-			WriteCwd(*cwdfile, cwd)
-		} else {
-			cwd := doLayout(fs.Arg(0), p, &config.Spacer.Locations, &config.Spacer.Layouts)
-			WriteCwd(*cwdfile, cwd)
+			fmt.Fprintln(os.Stderr, "position required")
+			os.Exit(1)
 		}
+		cwd := doLayout(fs.Arg(0), p, &config.Spacer.Locations, &config.Spacer.Layouts)
+		WriteCwd(*cwdfile, cwd)
 	default:
 		if flag.NArg() > 0 {
 			fmt.Fprintln(os.Stderr, "unknown command:", flag.Arg(0))
