@@ -17,4 +17,8 @@ function spacer::completion {
   COMPREPLY=($(compgen -W "$(spacer change)" -- "${COMP_WORDS[${#COMP_WORDS[@]}-1]}"))
 }
 
+complete -F spacer::completion spacer-layout
+complete -F spacer::completion spacer-change
+complete -F spacer::completion spacer-create
+
 (return 0 2>/dev/null) || spacer::cd "$@"
